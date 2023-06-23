@@ -1,16 +1,18 @@
 from typing import Tuple
 import json
+import os
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from bertopic import BERTopic
 from sentence_transformers import SentenceTransformer
 from transformers import pipeline
-from dotenv import load_dotenv
 
 
 app = Flask(__name__)
+CORS(app)
 
-def load_models(topic_model_path, sentiment_model, topic_embedding_model="sentence-transformers/all-MiniLM-L6-v2"):
+def load_models(topic_model_path='models/bertopic_model', sentiment_model="sentence-transformers/all-MiniLM-L6-v2", topic_embedding_model="sentence-transformers/all-MiniLM-L6-v2"):
     sentence_model = SentenceTransformer(topic_embedding_model)
     topic_model = BERTopic.load(topic_model_path, embedding_model=sentence_model)
     app.logger.info(f"Successfully loaded topic model from {topic_model_path}")
@@ -18,8 +20,7 @@ def load_models(topic_model_path, sentiment_model, topic_embedding_model="senten
     app.logger.info(f"Successfully loaded sentiment model from {sentiment_model}")
     return topic_model, sentence_model, sentiment_model
 
-load_dotenv()
-topic_model_path = 'models/bertopic_model'
+topic_model_path = "models/bertopic_model"
 topic_embedding_model_name="sentence-transformers/all-MiniLM-L6-v2"
 sentiment_model_name = "finiteautomata/bertweet-base-sentiment-analysis"
 topic_model, sentence_model, sentiment_model = load_models(topic_model_path, sentiment_model_name, topic_embedding_model_name)
@@ -53,8 +54,10 @@ def get_topic() -> jsonify or Tuple[jsonify, int]:
     if isinstance(request_data, tuple):
         return request_data
     tweet: str = request_data
+    if len(tweet) > 512:
+        app.logger.error("Tweet is too long")
+        return jsonify({"error": "Tweet is too long. Please provide a tweet with less than 512 characters."}), 400
     res = topic_model.transform([tweet])
-    print(res)
     topic = topic_model.get_topic(res[0][0])
     app.logger.info(topic)
     return json.dumps({"topic": topic})
@@ -73,10 +76,15 @@ def get_sentiment() -> jsonify or Tuple[jsonify, int]:
     if isinstance(request_data, tuple):
         return request_data
     tweet: str = request_data
+    if len(tweet) > 512:
+        app.logger.error("Tweet is too long")
+        return jsonify({"error": "Tweet is too long. Please provide a tweet with less than 512 characters."}), 400
     sentiment = sentiment_model(tweet)[0]
     app.logger.info(sentiment)
     return jsonify({"sentiment": sentiment["label"], "score": sentiment["score"]})
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    host = os.environ.get('TWEET_ANALYSIS_API_HOST', 'localhost')
+    port = int(os.environ.get('TWEET_ANALYSIS_API_PORT', 5000))
+    app.run(debug=True, host=host, port=port)
