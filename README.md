@@ -73,7 +73,7 @@ The following environment variables can be set or configured in the `.env` file:
 4. Repeat the process for additional tweets.
 
 ## Demo
-![Alt text](ChatGPT_twitter_Demo.mp4)
+[System Demo](https://github.com/bilbisli/ChatGPTweetTopicSentiment/assets/73055024/5221a1c0-cdc5-45ce-a392-7760942f0319)
 
 ## Data
 The data used for creating this project is available at:
