@@ -27,7 +27,7 @@ ChatGPT Tweet Analysis is a web application built with ReactJS and Flask that al
 ```
 git clone https://github.com/bilbisli/ChatGPTweetTopicSentiment.git
 ```
-3. Create and activate a virtual environment for the Flask app:
+2. Create and activate a virtual environment for the Flask app:
 ```
 cd ChatGPTweetTopicSentiment
 python -m venv venv
@@ -42,20 +42,20 @@ venv\Scripts\activate # For Windows
 ```
 pip install -r requirements.txt
 ```
-5. Install the dependencies for the React app:
+4. Install the dependencies for the React app:
 ```
 cd frontend
 npm install
 ```
-7. Start the React server:
-```
-npm start
-```
-9. In a separate terminal, start the Flask app (from the root of the project):
+5. In a separate terminal, start the Flask app (from the root of the project):
 ```
 python app.py
 ```
-11. Access the application in your web browser:
+6. Start the React server:
+```
+npm start
+```
+7. Access the application in your web browser:
     [http://localhost:3000](http://localhost:3000)
 
 ## Configuration
