@@ -42,14 +42,14 @@ venv\Scripts\activate # For Windows
 ```
 pip install -r requirements.txt
 ```
-4. Install the dependencies for the React app:
+4. In a separate terminal, start the Flask app (from the root of the project):
+```
+python app.py
+```
+5. Install the dependencies for the React app:
 ```
 cd frontend
 npm install
-```
-5. In a separate terminal, start the Flask app (from the root of the project):
-```
-python app.py
 ```
 6. Start the React server:
 ```
