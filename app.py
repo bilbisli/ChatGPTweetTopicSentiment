@@ -7,23 +7,32 @@ from flask_cors import CORS
 from bertopic import BERTopic
 from sentence_transformers import SentenceTransformer
 from transformers import pipeline
+from dotenv import load_dotenv
 
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
+
 def load_models(topic_model_path='models/bertopic_model', sentiment_model="sentence-transformers/all-MiniLM-L6-v2", topic_embedding_model="sentence-transformers/all-MiniLM-L6-v2"):
     sentence_model = SentenceTransformer(topic_embedding_model)
-    topic_model = BERTopic.load(topic_model_path, embedding_model=sentence_model)
+    topic_model = BERTopic.load(
+        topic_model_path, embedding_model=sentence_model)
     app.logger.info(f"Successfully loaded topic model from {topic_model_path}")
     sentiment_model = pipeline(model=sentiment_model)
-    app.logger.info(f"Successfully loaded sentiment model from {sentiment_model}")
+    app.logger.info(
+        f"Successfully loaded sentiment model from {sentiment_model}")
     return topic_model, sentence_model, sentiment_model
 
+
 topic_model_path = "models/bertopic_model"
-topic_embedding_model_name="sentence-transformers/all-MiniLM-L6-v2"
+topic_embedding_model_name = "sentence-transformers/all-MiniLM-L6-v2"
 sentiment_model_name = "finiteautomata/bertweet-base-sentiment-analysis"
-topic_model, sentence_model, sentiment_model = load_models(topic_model_path, sentiment_model_name, topic_embedding_model_name)
+topic_model, sentence_model, sentiment_model = load_models(
+    topic_model_path, sentiment_model_name, topic_embedding_model_name)
+
 
 def get_data_from_request(request, payload_name='tweet'):
     '''
@@ -31,7 +40,8 @@ def get_data_from_request(request, payload_name='tweet'):
     '''
     try:
         data: str = request.json[payload_name]
-        app.logger.info(f"Successfully got {payload_name} from request\n: {data}")
+        app.logger.info(
+            f"Successfully got {payload_name} from request\n: {data}")
         return data
     except KeyError:
         app.logger.error(f"Failed to get {payload_name} from request")
@@ -39,6 +49,7 @@ def get_data_from_request(request, payload_name='tweet'):
     except TypeError:
         app.logger.error(f"Failed to get {payload_name} from request")
         return jsonify({"error": "Please provide a valid JSON."}), 400
+
 
 @app.route("/topic", methods=["POST"])
 def get_topic() -> jsonify or Tuple[jsonify, int]:
@@ -61,7 +72,8 @@ def get_topic() -> jsonify or Tuple[jsonify, int]:
     topic = topic_model.get_topic(res[0][0])
     app.logger.info(topic)
     return json.dumps({"topic": topic})
-    
+
+
 @app.route("/sentiment", methods=["POST"])
 def get_sentiment() -> jsonify or Tuple[jsonify, int]:
     '''
@@ -70,7 +82,7 @@ def get_sentiment() -> jsonify or Tuple[jsonify, int]:
     curl -X POST -H "Content-Type: application/json" -d '{tweet:"I love the new features of the iPhone!"}' http://localhost:5000/sentiment
     '''
     app.logger.info("Request received for /sentiment")
-    
+
     request_data = get_data_from_request(request, payload_name='tweet')
     # in case of error
     if isinstance(request_data, tuple):

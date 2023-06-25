@@ -1,6 +1,8 @@
-import logo from './logo.svg';
 import React, { useState } from 'react';
 import './App.css';
+import Title from './components/Title';
+import InputContainer from './components/InputContainer';
+import ResultContainer from './components/ResultContainer';
 
 const TWEET_ANALYSIS_API_HOST = process.env.TWEET_ANALYSIS_API_HOST || 'localhost';
 const TWEET_ANALYSIS_API_PORT = process.env.TWEET_ANALYSIS_API_PORT || 5000;
@@ -13,7 +15,7 @@ function App() {
 
   const analyzeTweet = async () => {
     try {
-      const responseSentiment = await fetch(`${TWEET_ANALYSIS_API_URL}/sentiment`, {
+      const responseSentiment = await fetch(`${ TWEET_ANALYSIS_API_URL }/sentiment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,9 +38,26 @@ function App() {
     } catch (error) {
       console.error('Error analyzing tweet:', error);
     }
+
   };
 
   return (
+    <div className="app-container">
+      <div className="App">
+        <Title />
+        <InputContainer tweet={tweet} setTweet={setTweet} analyzeTweet={analyzeTweet} />
+        <ResultContainer sentiment={sentiment} topic={topic} />
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+
+
+/*
+return (
     <div className="app-container">
       <div className="App">
         <h1 className="title">ChatGPT Tweet Analysis</h1>
@@ -68,7 +87,6 @@ function App() {
                       <span className="word">{pair[0]}</span>
                       <span className="probability">{pair[1]}</span>
                     </div>
-                    <div className="topic-item"></div>
                     <div className="probability-bar">
                       <div
                         className="probability-fill"
@@ -84,6 +102,4 @@ function App() {
       </div>
     </div>
   );  
-}
-
-export default App;
+*/
