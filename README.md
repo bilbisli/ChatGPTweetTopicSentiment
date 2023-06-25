@@ -72,6 +72,9 @@ The following environment variables can be set or configured in the `.env` file:
 3. The sentiment (positive, negative, neutral) and topic of the tweet will be displayed below.
 4. Repeat the process for additional tweets.
 
+## Demo
+![Alt text](ChatGPT_twitter_Demo.gif)
+
 ## Data
 The data used for creating this project is available at:
 [ChatGPT Twitter Dataset](https://www.kaggle.com/datasets/tariqsays/chatgpt-twitter-dataset)
