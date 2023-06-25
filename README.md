@@ -33,11 +33,11 @@ git clone https://github.com/bilbisli/ChatGPTweetTopicSentiment.git
 cd ChatGPTweetTopicSentiment
 py -3.9 -m venv venv
 ```
-For macOS and Linux:
+ * For macOS and Linux:
 ```
 source venv/bin/activate
 ```
-For Windows:
+ * For Windows:
 ```
 venv\Scripts\activate
 ```
