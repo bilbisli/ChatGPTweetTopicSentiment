@@ -23,14 +23,15 @@ ChatGPT Tweet Analysis is a web application built with ReactJS and Flask that al
 
 ## Getting Started
 
-1. Clone the repository:
-```
+0. Install [**`python`**](https://www.python.org/downloads/release/python-3913/), [**`Node.js`**](https://nodejs.org/en/download) and [**`git`**](https://git-scm.com/downloads)
+1. Open a terminal and clone the repository:
+```shell
 git clone https://github.com/bilbisli/ChatGPTweetTopicSentiment.git
 ```
 2. Create and activate a virtual environment for the Flask app:
 ```
 cd ChatGPTweetTopicSentiment
-python -m venv venv
+py -3.9 -m venv venv
 ```
 ```
 source venv/bin/activate # For macOS and Linux
@@ -73,9 +74,11 @@ The following environment variables can be set or configured in the `.env` file:
 4. Repeat the process for additional tweets.
 
 ## Demo
+
 [System Demo](https://github.com/bilbisli/ChatGPTweetTopicSentiment/assets/73055024/5221a1c0-cdc5-45ce-a392-7760942f0319)
 
 ## Data
+
 The data used for creating this project is available at:
 [ChatGPT Twitter Dataset](https://www.kaggle.com/datasets/tariqsays/chatgpt-twitter-dataset)
 
